@@ -1,0 +1,229 @@
+{{!-- <!DOCTYPE html>
+{{!< main}}
+<h1>Lista de Productos en Tiempo Real</h1>
+<div class="container" id="products-list">
+    {{#each products}}
+    <div class="card" id="product-{{this.id}}">
+        <h2>{{this.title}}</h2>
+        <p>{{this.description}}</p>
+        <p><strong>Price:</strong> ${{this.price}}</p>
+        <p><strong>Stock:</strong> {{this.stock}}</p>
+        <p><strong>Code:</strong> {{this.code}}</p>
+        <p><strong>Category:</strong> {{this.category}}</p>
+    </div>
+    {{/each}}
+</div>
+<form id="product-form">
+    <input type="text" id="title" placeholder="Title" required>
+    <input type="text" id="description" placeholder="Description" required>
+    <input type="text" id="code" placeholder="Code" required>
+    <input type="number" id="price" placeholder="Price" required>
+    <input type="number" id="stock" placeholder="Stock" required>
+    <input type="text" id="category" placeholder="Category" required>
+    <button type="submit">Add Product</button>
+</form>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  const productForm = document.getElementById('product-form');
+
+  productForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const code = document.getElementById('code').value;
+    const price = document.getElementById('price').value;
+    const stock = document.getElementById('stock').value;
+    const category = document.getElementById('category').value;
+
+    const newProduct = {
+      title,
+      description,
+      code,
+      price: parseFloat(price),
+      stock: parseInt(stock),
+      category
+    };
+
+    // Emitir el evento al servidor
+    socket.emit('new-product', newProduct);
+
+    // Limpiar los campos del formulario después de enviarlos
+    document.getElementById('title').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('code').value = '';
+    document.getElementById('price').value = '';
+    document.getElementById('stock').value = '';
+    document.getElementById('category').value = '';
+  });
+
+  // Escuchar la respuesta del servidor
+  socket.on('update-products', (products) => {
+  console.log('Productos actualizados recibidos:', products);
+  const productsContainer = document.getElementById('products-list');
+  productsContainer.innerHTML = ''; // Limpiar la lista existente
+
+  products.forEach(product => {
+    const productCard = document.createElement('div');
+    productCard.classList.add('card');
+    productCard.setAttribute('id', `product-${product.id}`);
+    productCard.innerHTML = `
+      <h2>${product.title}</h2>
+      <p>${product.description}</p>
+      <p><strong>Price:</strong> $${product.price}</p>
+      <p><strong>Stock:</strong> ${product.stock}</p>
+      <p><strong>Code:</strong> ${product.code}</p>
+      <p><strong>Category:</strong> ${product.category}</p>
+    `;
+    productsContainer.appendChild(productCard);
+  });
+});
+</script> --}}
+
+
+{{!-- <!DOCTYPE html>
+{{!< main}}
+<h1>Real-Time Product List</h1>
+<div class="container">
+  <!-- Form for adding new products -->
+  <div id="form-container">
+    <form id="product-form">
+      <input type="text" id="title" placeholder="Title" required>
+      <input type="text" id="description" placeholder="Description" required>
+      <input type="text" id="code" placeholder="Code" required>
+      <input type="number" id="price" placeholder="Price" required>
+      <input type="number" id="stock" placeholder="Stock" required>
+      <input type="text" id="category" placeholder="Category" required>
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+  <!-- Container for displaying products -->
+  <div id="products-container">
+    <div id="products-list">
+      {{#each products}}
+      <div class="card" id="product-{{this.id}}">
+        <h2>{{this.title}}</h2>
+        <p>{{this.description}}</p>
+        <p><strong>Price:</strong> ${{this.price}}</p>
+        <p><strong>Stock:</strong> {{this.stock}}</p>
+        <p><strong>Code:</strong> {{this.code}}</p>
+        <p><strong>Category:</strong> {{this.category}}</p>
+        <button class="delete-btn" data-id="{{this.id}}">Delete</button>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>  <!-- Include the Socket.IO client library -->
+<script>
+  const socket = io();  // Connect to the Socket.IO server
+
+  const productForm = document.getElementById('product-form');
+
+  // Event listener for form submission
+  productForm.addEventListener('submit', (event) => {
+    event.preventDefault();  // Prevent the form from submitting the traditional way
+
+    // Get form data
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const code = document.getElementById('code').value;
+    const price = document.getElementById('price').value;
+    const stock = document.getElementById('stock').value;
+    const category = document.getElementById('category').value;
+
+    const newProduct = {
+      title,
+      description,
+      code,
+      price: parseFloat(price),
+      stock: parseInt(stock),
+      category
+    };
+
+    socket.emit('new-product', newProduct);  // Emit the new product to the server
+    productForm.reset();  // Reset the form
+  });
+
+  // Listen for 'update-products' event from the server
+  socket.on('update-products', (products) => {
+    console.log('Updated products received:', products);
+    const productsContainer = document.getElementById('products-list');
+    productsContainer.innerHTML = '';  // Clear the existing list
+
+    // Add each product to the DOM
+    products.forEach(product => {
+      const productCard = document.createElement('div');
+      productCard.classList.add('card');
+      productCard.setAttribute('id', `product-${product.id}`);
+      productCard.innerHTML = `
+        <h2>${product.title}</h2>
+        <p>${product.description}</p>
+        <p><strong>Price:</strong> $${product.price}</p>
+        <p><strong>Stock:</strong> ${product.stock}</p>
+        <p><strong>Code:</strong> ${product.code}</p>
+        <p><strong>Category:</strong> ${product.category}</p>
+        <button class="delete-btn" data-id="${product.id}">Delete</button>
+      `;
+      productsContainer.appendChild(productCard);
+    });
+
+    // Add event listeners to the delete buttons
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const productId = button.getAttribute('data-id');
+        socket.emit('delete-product', productId);  // Emit the delete event to the server
+      });
+    });
+  });
+
+  // Listen for 'remove-product' event from the server
+  socket.on('remove-product', (productId) => {
+    const productElement = document.getElementById(`product-${productId}`);  // Get the product element by ID
+    if (productElement) {
+      productElement.remove();  // Remove the product element from the DOM
+    }
+  });
+</script> --}}
+
+
+<!DOCTYPE html>
+{{!< main}}
+<h1>Real-Time Product List</h1>
+<div class="container">
+  <!-- Form for adding new products -->
+  <div id="form-container">
+    <form action="/api/products" method="post" id="product-form" enctype="multipart/form-data">
+      <input type="text" id="title" placeholder="Title" required>
+      <input type="text" id="description" placeholder="Description" required>
+      <input type="text" id="code" placeholder="Code" required>
+      <input type="number" id="price" placeholder="Price" required>
+      <input type="number" id="stock" placeholder="Stock" required>
+      <input type="text" id="category" placeholder="Category" required>
+      <input type="file" id="thumbnails" name="thumbnails" multiple style="display: none;">
+      <label for="thumbnails" class="custom-file-upload">Choose Files</label>
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+  <!-- Container for displaying products -->
+  <div id="products-container">
+    <div id="products-list">
+      {{#each products}}
+      <div class="card" id="product-{{this.id}}">
+        <h2>{{this.title}}</h2>
+        <p>{{this.description}}</p>
+        <p><strong>Price:</strong> ${{this.price}}</p>
+        <p><strong>Stock:</strong> {{this.stock}}</p>
+        <p><strong>Code:</strong> {{this.code}}</p>
+        <p><strong>Category:</strong> {{this.category}}</p>
+        <button class="delete-btn" data-id="{{this.id}}">Delete</button>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>
