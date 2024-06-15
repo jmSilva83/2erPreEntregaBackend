@@ -291,6 +291,18 @@ class ProductManager {
     console.log('Product data saved successfully.');
     return newProduct.id;
   }
+
+  async getProductById(id) {
+    const products = await this.getProducts();
+    const product = products.find((product) => product.id === id);
+    if (product) {
+      console.log(`Product with ID: ${id} found.`);
+    } else {
+      console.log(`Product with ID: ${id} not found.`);
+    }
+    return product;
+  }
 }
+
 
 export default ProductManager;

@@ -1,41 +1,57 @@
 // Connect to the Socket.IO server
 const socket = io();
+console.log("Conectado desde el front");
 
-const form = document.getElementById('product-form');  // Get the product form element
-const productsList = document.getElementById('products-list');  // Get the products list container
+const form = document.getElementById('product-form');
+const productsList = document.getElementById('products-list');
 
 // Event listener for form submission
 form.addEventListener('submit', (event) => {
-    event.preventDefault();  // Prevent the form from submitting the traditional way
+    event.preventDefault();
     
-    // Get form data
-    const newProduct = {
-        title: document.getElementById('title').value,
-        description: document.getElementById('description').value,
-        code: document.getElementById('code').value,
-        price: parseFloat(document.getElementById('price').value),
-        stock: parseInt(document.getElementById('stock').value),
-        category: document.getElementById('category').value,
-        thumbnails: []
-    };
+    // Create a FormData object
+    const formData = new FormData(form);
 
-    socket.emit('new-product', newProduct);  // Emit the new product to the server
+    fetch('/api/products', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            socket.emit('new-product', data.payload);
+        } else {
+            console.error('Error al agregar el producto:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error al agregar el producto:', error.message);
+    });
 
-    form.reset();  // Reset the form
+    form.reset();
 });
 
 // Listen for 'update-products' event from the server
 socket.on('update-products', (product) => {
-    const productElement = document.createElement('li');  // Create a new product element
+    const productElement = document.createElement('div');
+    productElement.className = 'card';
     productElement.id = `product-${product.id}`;
-    productElement.innerText = `${product.title} - ${product.price}`;
-    productsList.appendChild(productElement);  // Add the product element to the products list
+    productElement.innerHTML = `
+        <h2>${product.title}</h2>
+        <p>${product.description}</p>
+        <p><strong>Price:</strong> $${product.price}</p>
+        <p><strong>Stock:</strong> ${product.stock}</p>
+        <p><strong>Code:</strong> ${product.code}</p>
+        <p><strong>Category:</strong> ${product.category}</p>
+        <button class="delete-btn" data-id="${product.id}">Delete</button>
+    `;
+    productsList.appendChild(productElement);
 });
 
 // Listen for 'remove-product' event from the server
 socket.on('remove-product', (productId) => {
-    const productElement = document.getElementById(`product-${productId}`);  // Get the product element by ID
+    const productElement = document.getElementById(`product-${productId}`);
     if (productElement) {
-        productsList.removeChild(productElement);  // Remove the product element from the list
+        productsList.removeChild(productElement);
     }
 });

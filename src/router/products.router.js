@@ -145,6 +145,74 @@
 // export default router;
 //hasta aca fue la primera preentrega
 
+// import { Router } from 'express';
+// import { productsService } from '../managers/index.js';
+// import uploader from '../service/uploader.js';
+// import __dirname from '../utils.js';
+
+// const router = Router();
+
+// router.get('/', async (req, res) => {
+//   const products = await manager.getProducts();
+//   res.json(products);
+// });
+
+// router.get('/products/:pid',async(req,res)=>{
+//   const product = await productsService.getProductById(req.params.vid);
+//   if(!product){
+//       return res.render("404");
+//   }
+//   res.render('realTimeProducts',{
+//       product,
+//       mainImage:product.thumbnails.find(thumbnail=>thumbnail.main)
+//   })
+// })
+
+// router.post('/', uploader.array('thumbnails', 3), async (req, res) => {
+//   console.log('Connected with product router :) ');
+//   const product = req.body;
+//   try {
+//     const newProduct = {
+//       title: product.title,
+//       description: product.description,
+//       code: product.code,
+//       price: product.price,
+//       stock: product.stock,
+//       category: product.category,
+//       thumbnails: [],
+//     };
+//     for (let i = 0; i < req.files.length; i++) {
+//       newProduct.thumbnails.push({
+//         mimetype: req.files[i].mimetype,
+//         path: `/files/products/${req.files[i].filename}`,
+//         main: i == 0,
+//       });
+//     }
+//     const result = await productsService.createProduct(newProduct);
+//     res.send({ status: 'success', payload: result });
+//   } catch (error) {
+//     console.log(error);
+//     res
+//       .status(500)
+//       .send({ status: 'error', message: 'Error creating the product' });
+//   }
+// });
+
+// router.delete('/:pid', async (req, res) => {
+//   const productId = parseInt(req.params.pid);
+//   const deletedProduct = await manager.deleteProduct(productId);
+//   if (deletedProduct) {
+//     const io = getIO();
+//     io.emit('remove-product', productId);
+//     res.json(deletedProduct);
+//   } else {
+//     res.status(404).json({ error: 'Product not found' });
+//   }
+// });
+
+// export default router;
+
+
 import { Router } from 'express';
 import { productsService } from '../managers/index.js';
 import uploader from '../service/uploader.js';
@@ -152,52 +220,61 @@ import __dirname from '../utils.js';
 
 const router = Router();
 
-
 router.get('/', async (req, res) => {
-    const products = await manager.getProducts();
-    res.json(products);
+  const products = await productsService.getProducts();
+  res.json(products);
 });
 
-router.get('/:pid', async (req, res) => {
-    const productId = parseInt(req.params.pid);
-    const product = await manager.getProductById(productId);
-    if (product) {
-        res.json(product);
-    } else {
-        res.status(404).json({ error: 'Product not found' });
-    }
+router.get('/products/:pid', async (req, res) => {
+  const product = await productsService.getProductById(parseInt(req.params.pid));
+  if (!product) {
+    return res.render("404");
+  }
+  res.render('realTimeProducts', {
+    product,
+    mainImage: product.thumbnails.find(thumbnail => thumbnail.main)
+  });
 });
 
-router.post('/',uploader.array('thumbnails', 3), async (req, res) => {
-    console.log("Connected with product router :) ");
-    const product = req.body;
-    try{
-        const newProduct = { title:product.title,
-            description:product.description,
-            code:product.code,
-            price:product.price,
-            stock:product.stock,
-            category:product.category,
-            thumbnails:[] };
-            const result = await productsService.createProduct(newProduct);
-            res.send({status:"success",payload:result});
-    }catch(error){
-        console.log(error);
-        res.status(500).send({status:"error",message:"Error creating the product"});
+router.post('/', uploader.array('thumbnails', 3), async (req, res) => {
+  console.log('Connected with product router :) ');
+  const product = req.body;
+  try {
+    const newProduct = {
+      title: product.title,
+      description: product.description,
+      code: product.code,
+      price: parseFloat(product.price),
+      stock: parseInt(product.stock),
+      category: product.category,
+      thumbnails: []
+    };
+    for (let i = 0; i < req.files.length; i++) {
+      newProduct.thumbnails.push({
+        mimetype: req.files[i].mimetype,
+        path: `/files/products/${req.files[i].filename}`,
+        main: i === 0
+      });
     }
-    
+    const result = await productsService.createProduct(newProduct); // Aquí se crea el producto
+    res.send({ status: 'success', payload: result });
+  } catch (error) {
+    console.log('Error creating the product:', error.message);
+    res.status(500).send({ status: 'error', message: 'Error creating the product' });
+  }
 });
+
 
 router.delete('/:pid', async (req, res) => {
-    const productId = parseInt(req.params.pid);
-    const deletedProduct = await manager.deleteProduct(productId);
-    if (deletedProduct) {
-        const io = getIO();
-        io.emit('remove-product', productId);
-        res.json(deletedProduct);
-    } else {
-        res.status(404).json({ error: 'Product not found' });
-    }
+  const productId = parseInt(req.params.pid);
+  const deletedProduct = await productsService.deleteProduct(productId);
+  if (deletedProduct) {
+    const io = getIO();
+    io.emit('remove-product', productId);
+    res.json(deletedProduct);
+  } else {
+    res.status(404).json({ error: 'Product not found' });
+  }
 });
 
 export default router;
