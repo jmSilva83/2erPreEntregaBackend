@@ -1,17 +1,27 @@
 import { Router } from 'express';
-import ProductManager from '../managers/ProductManager.js';
+import { productsService } from '../managers/index.js';
 
 const router = Router();
-const manager = new ProductManager();
 
-router.get('/home', async (req, res) => {
-  const products = await manager.getProducts();
-  res.render('home', { products });
+router.get('/Home', async (req, res) => {
+  const products = await productsService.getProducts();
+  res.render('Home', { products });
 });
 
-router.get('/realtimeproducts', async (req, res) => {
-  const products = await manager.getProducts();
-  res.render('realTimeProducts', { products });
+router.get('/Realtimeproducts', async (req, res) => {
+  const products = await productsService.getProducts();
+  res.render('RealTimeProducts', { products });
 });
+
+router.get('/:pid',async(req,res)=>{
+  const product = await productsService.getProductById(req.params.pid);
+  if(!product){
+    return res.render('404');
+  }
+  res.render('ProductDetails',{
+    product,
+    mainImage:product.thumbnails.find(thumbnails=>thumbnails.main)
+  });
+})
 
 export default router;

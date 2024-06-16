@@ -212,68 +212,88 @@
 
 // export default router;
 
-
 import { Router } from 'express';
 import { productsService } from '../managers/index.js';
 import uploader from '../service/uploader.js';
-import __dirname from '../utils.js';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
-  const products = await productsService.getProducts();
-  res.json(products);
+  try {
+    const products = await productsService.getProducts();
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error.message);
+    res
+      .status(500)
+      .json({ status: 'error', message: 'Error fetching products' });
+  }
 });
 
 router.get('/products/:pid', async (req, res) => {
-  const product = await productsService.getProductById(parseInt(req.params.pid));
-  if (!product) {
-    return res.render("404");
+  try {
+    const productId = parseInt(req.params.pid);
+    const product = await productsService.getProductById(productId);
+    if (!product) {
+      return res.render('404');
+    }
+    res.render('realTimeProducts', {
+      product,
+      mainImage: product.thumbnails.find((thumbnail) => thumbnail.main),
+    });
+  } catch (error) {
+    console.error('Error fetching product details:', error.message);
+    res.render('500'); // Render an error page or handle as appropriate
   }
-  res.render('realTimeProducts', {
-    product,
-    mainImage: product.thumbnails.find(thumbnail => thumbnail.main)
-  });
 });
 
 router.post('/', uploader.array('thumbnails', 3), async (req, res) => {
-  console.log('Connected with product router :) ');
   const product = req.body;
   try {
     const newProduct = {
       title: product.title,
       description: product.description,
       code: product.code,
-      price: parseFloat(product.price),
-      stock: parseInt(product.stock),
+      price: product.price,
+      stock: product.stock,
       category: product.category,
-      thumbnails: []
+      thumbnails: [],
     };
-    for (let i = 0; i < req.files.length; i++) {
-      newProduct.thumbnails.push({
-        mimetype: req.files[i].mimetype,
-        path: `/files/products/${req.files[i].filename}`,
-        main: i === 0
-      });
-    }
-    const result = await productsService.createProduct(newProduct); // Aquí se crea el producto
+
+    for(let i=0;i<req.files.length;i++) {
+        newProduct.thumbnails.push({
+          mimetype: req.file[i].mimetype,
+          path: `/files/products/${req.files[i].filename}`,
+          main: i == 0,
+        });
+      };
+    
+
+    const result = await productsService.createProduct(newProduct);
+    req.io.emit('newProduct', result);
     res.send({ status: 'success', payload: result });
   } catch (error) {
-    console.log('Error creating the product:', error.message);
-    res.status(500).send({ status: 'error', message: 'Error creating the product' });
+    console.log(error);
+    res.status(500).send({ status: 'error', error:error });
   }
 });
 
-
 router.delete('/:pid', async (req, res) => {
-  const productId = parseInt(req.params.pid);
-  const deletedProduct = await productsService.deleteProduct(productId);
-  if (deletedProduct) {
-    const io = getIO();
-    io.emit('remove-product', productId);
-    res.json(deletedProduct);
-  } else {
-    res.status(404).json({ error: 'Product not found' });
+  try {
+    const productId = parseInt(req.params.pid);
+    const deletedProduct = await productsService.deleteProduct(productId);
+    if (deletedProduct) {
+      const io = req.io; // Obtén el objeto io desde req
+      io.emit('remove-product', productId);
+      res.json(deletedProduct);
+    } else {
+      res.status(404).json({ error: 'Product not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting product:', error.message);
+    res
+      .status(500)
+      .json({ status: 'error', message: 'Error deleting product' });
   }
 });
 

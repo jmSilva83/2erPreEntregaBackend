@@ -257,7 +257,7 @@ import __dirname from '../utils.js';
 
 const PATH = `${__dirname}/data/products.json`;
 
-class ProductManager {
+export default class ProductManager {
   constructor() {
     this.init();
   }
@@ -269,40 +269,33 @@ class ProductManager {
   }
 
   async getProducts() {
-    try {
-      const data = await fs.promises.readFile(PATH, 'utf-8');
-      console.log('Product data retrieved successfully.');
-      return JSON.parse(data);
-    } catch (error) {
-      console.log('Error reading product data:', error);
-      process.exit(1);
-    }
+    const data = await fs.promises.readFile(PATH, 'utf-8');
+    console.log('Product data retrieved successfully.');
+    return JSON.parse(data);
   }
 
-  async createProduct(newProduct) {
+  async createProduct(product) {
     const products = await this.getProducts();
-    if (newProduct.length === 0) {
-      newProduct.id = 1;
+    if (products.length === 0) {
+      product.id = 1;
     } else {
-      newProduct.id = products[products.length - 1].id + 1;
+      product.id = products[products.length - 1].id + 1;
     }
-    newProduct.push(newProduct);
+    products.push(product);
     await fs.promises.writeFile(PATH, JSON.stringify(products, null, '\t'));
     console.log('Product data saved successfully.');
-    return newProduct.id;
+    return product;
   }
 
   async getProductById(id) {
     const products = await this.getProducts();
     const product = products.find((product) => product.id === id);
-    if (product) {
-      console.log(`Product with ID: ${id} found.`);
-    } else {
-      console.log(`Product with ID: ${id} not found.`);
-    }
+    return product;
+  }
+
+  async getProductById(id) {
+    const products = await this.getProductById();
+    const product = products.find((product) => product.id == id);
     return product;
   }
 }
-
-
-export default ProductManager;
