@@ -1,48 +1,35 @@
-// Connect to the Socket.IO server
 const socket = io();
-console.log('Conectado desde el front');
+console.log('connected from socket');
 
-const productForm = document.getElementById('product-form');
+const productsForm = document.getElementById('productsForm');
 const productsList = document.getElementById('products-list');
 
-
-productForm.addEventListener('submit', event => {
+productsForm.addEventListener('submit', (event) => {
   event.preventDefault();
-
-  const data = new FormData(productForm);
-  //Enviar como JSON, ejemplo
-  // const obj = {}
-  // data.forEach((value,key)=>obj[key]=value);
-
+  const data = new FormData(productsForm);
   fetch('/api/products', {
     method: 'POST',
-    body: FormData,
-  })
-  
-  productForm.reset();
+    body: data,
+  });
+  productsForm.reset();
 });
 
-// Listen for 'update-products' event from the server
-socket.on('newProduct', formData => {
+socket.on('newProduct', (data) => {
   const productElement = document.createElement('div');
   productElement.className = 'card';
-  productElement.id = `product-${product.id}`;
+  productElement.id = `product-${data.id}`;
+  productElement.style.backgroundImage = `url(${data.thumbnails[0].path})`;
+  productElement.style.backgroundSize = 'cover';
+  productElement.style.backgroundPosition = 'center';
   productElement.innerHTML = `
-        <h2>${product.title}</h2>
-        <p>${product.description}</p>
-        <p><strong>Price:</strong> $${product.price}</p>
-        <p><strong>Stock:</strong> ${product.stock}</p>
-        <p><strong>Code:</strong> ${product.code}</p>
-        <p><strong>Category:</strong> ${product.category}</p>
-        <button class="delete-btn" data-id="${product.id}">Delete</button>
+        <h2>${data.title}</h2>
+        <p>${data.description}</p>
+        <img src="${data.thumbnails[0].path}" alt="${data.title}" style="max-width: 100%;">
+        <p><strong>Price:</strong> $${data.price}</p>
+        <p><strong>Stock:</strong> ${data.stock}</p>
+        <p><strong>Code:</strong> ${data.code}</p>
+        <p><strong>Category:</strong> ${data.category}</p>
+        <button class="delete-btn" data-id="${data.id}">Delete</button>
     `;
   productsList.appendChild(productElement);
-});
-
-// Listen for 'remove-product' event from the server
-socket.on('remove-product', (productId) => {
-  const productElement = document.getElementById(`product-${productId}`);
-  if (productElement) {
-    productsList.removeChild(productElement);
-  }
 });

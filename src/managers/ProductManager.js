@@ -289,13 +289,20 @@ export default class ProductManager {
 
   async getProductById(id) {
     const products = await this.getProducts();
-    const product = products.find((product) => product.id === id);
+    const product = products.find(p => p.id == id);
     return product;
   }
 
-  async getProductById(id) {
-    const products = await this.getProductById();
-    const product = products.find((product) => product.id == id);
-    return product;
+  async deleteProduct(id) {
+    const products = await this.getProducts();
+    const productIndex = products.findIndex(p => p.id == id);
+    if (productIndex !== -1) {
+      const deletedProduct = products.splice(productIndex, 1)[0];
+      await fs.promises.writeFile(PATH, JSON.stringify(products, null, '\t'));
+      console.log('Product data deleted successfully.');
+      return deletedProduct;
+    }
+    return null;
   }
+
 }

@@ -20,7 +20,7 @@ router.get('/:pid',async(req,res)=>{
   }
   res.render('ProductDetails',{
     product,
-    mainImage:product.thumbnails.find(thumbnails=>thumbnails.main)
+    mainImage:product.thumbnails.find(thumbnail=>thumbnail.main)
   });
 })
 

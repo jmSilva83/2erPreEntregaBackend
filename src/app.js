@@ -20,16 +20,16 @@ app.set('view engine', 'handlebars');
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
   req.io = io;
   next();
-})
+});
 
 // Routes setup
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 
-io.on('connection',socket=>{
-  console.log("Socket conectado");
-  })
+io.on('connection', (socket) => {
+  console.log('Socket connected');
+});

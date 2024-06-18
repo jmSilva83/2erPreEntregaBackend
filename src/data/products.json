@@ -108,5 +108,117 @@
 		"category": "Juegos",
 		"thumbnails": [],
 		"id": 10
+	},
+	{
+		"title": "juego de prueba",
+		"description": "es un juego de prueba",
+		"code": "7uj5",
+		"price": "100",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718668353904-Beautiful Woman.jpeg",
+				"main": true
+			}
+		],
+		"id": 11
+	},
+	{
+		"title": "juego de prueba",
+		"description": "es un juego de prueba",
+		"code": "7uj5",
+		"price": "100",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718668428199-Super Girl with Black Hair and Blue Eyes.jpeg",
+				"main": true
+			}
+		],
+		"id": 12
+	},
+	{
+		"title": "juego de prueba",
+		"description": "es un juego de prueba",
+		"code": "7uj5",
+		"price": "100",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718669057938-3b040756-d2d1-4235-903e-62cfdc52c321.jpeg",
+				"main": true
+			}
+		],
+		"id": 13
+	},
+	{
+		"title": "juego de prueba",
+		"description": "es un juego de prueba",
+		"code": "7uj5",
+		"price": "100",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718669212388-Super Girl with Black Hair and Blue Eyes.jpeg",
+				"main": true
+			}
+		],
+		"id": 14
+	},
+	{
+		"title": "juego de prueba",
+		"description": "es un juego de prueba",
+		"code": "7uj5",
+		"price": "100",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718669291953-Super Girl with Black Hair and Blue Eyes.jpeg",
+				"main": true
+			}
+		],
+		"id": 15
+	},
+	{
+		"title": "juego de prueba",
+		"description": "es un juego de prueba",
+		"code": "7uj5",
+		"price": "100",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718669348693-Created with Midjourney Ai #Character #Fantasyâ¦.jpeg",
+				"main": true
+			}
+		],
+		"id": 16
+	},
+	{
+		"title": "juego de prueba",
+		"description": "es un juego de prueba",
+		"code": "7uj5",
+		"price": "100",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718669385166-Super Girl with Black Hair and Blue Eyes.jpeg",
+				"main": true
+			}
+		],
+		"id": 17
 	}
 ]
