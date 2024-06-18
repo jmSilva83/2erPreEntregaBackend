@@ -1,71 +1,80 @@
 [
 	{
-		"title": "juego de loca",
-		"description": "es una superchicaloca",
-		"code": "erhnys",
-		"price": "15000",
+		"title": "A PLAGUE TALE INNOCENCE",
+		"description": "A Plague Tale: Innocence es un juego de acción y aventura ambientado en una Francia medieval devastada por la enfermedad y la guerra. Sigue la historia de dos hermanos, Amicia y Hugo, mientras luchan por sobrevivir y escapar de la Inquisición y las hordas de ratas que propagan la peste.",
+		"code": "APTI-XBOX",
+		"price": "40",
 		"stock": "10",
-		"category": "1",
+		"category": "2",
 		"thumbnails": [
 			{
 				"mimetype": "image/jpeg",
-				"path": "/files/products/undefined-89129319-4442-4ca9-9b22-6f896815ebb8.jpeg",
+				"path": "/files/products/undefined-A Plague Tale Innocence2.jpg",
 				"main": true
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/undefined-A Plague Tale Innocence1.jpg",
+				"main": false
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/undefined-A Plague Tale Innocence.jpg",
+				"main": false
 			}
 		],
 		"id": 1
 	},
 	{
-		"title": "juego de loca",
-		"description": "es una superchicaloca",
-		"code": "erhnys",
-		"price": "15000",
+		"title": "ELDEN RING",
+		"description": "Elden Ring es un juego de rol de acción desarrollado por FromSoftware en colaboración con George R. R. Martin. Sumérgete en un vasto mundo abierto lleno de peligros y misterios mientras buscas restaurar el Elden Ring y reclamar tu destino como Señor de Elden.",
+		"code": "ELDR-XBOX",
+		"price": "40",
 		"stock": "10",
-		"category": "1",
+		"category": "3",
 		"thumbnails": [
 			{
 				"mimetype": "image/jpeg",
-				"path": "/files/products/undefined-Premium Vector _ Software development, programming language, coding.jpeg",
+				"path": "/files/products/undefined-ELDEN RING2.jpg",
 				"main": true
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/undefined-ELDEN RING1.jpg",
+				"main": false
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/undefined-Elden Ring.jpg",
+				"main": false
 			}
 		],
 		"id": 2
 	},
 	{
-		"title": "juego de loca",
-		"description": "es una superchicaloca",
-		"code": "erhnys",
-		"price": "15000",
+		"title": "RED DEAD REDEMPTION II",
+		"description": "Red Dead Redemption II es un épico juego de acción y aventura ambientado en el salvaje oeste americano. Sigue la historia de Arthur Morgan y la banda Van der Linde mientras luchan por sobrevivir en un mundo implacable lleno de peligros y oportunidades.",
+		"code": "RDR2-XBOX",
+		"price": "60",
 		"stock": "10",
 		"category": "1",
 		"thumbnails": [
 			{
-				"mimetype": "image/jpeg",
-				"path": "/files/products/undefined-AnubisDev work.jpeg",
+				"mimetype": "image/webp",
+				"path": "/files/products/undefined-RED DEAD REDEMPTION II2.webp",
 				"main": true
 			},
 			{
 				"mimetype": "image/jpeg",
-				"path": "/files/products/undefined-Puede que tu mÃ³vil estÃ© expuesto aunque te digan lo contrario.jpeg",
+				"path": "/files/products/undefined-RED DEAD REDEMPTION II1.jpeg",
+				"main": false
+			},
+			{
+				"mimetype": "image/webp",
+				"path": "/files/products/undefined-RED DEAD REDEMPTION II.webp",
 				"main": false
 			}
 		],
 		"id": 3
-	},
-	{
-		"title": "juego de loca",
-		"description": "es una superchicaloca",
-		"code": "erhnys",
-		"price": "15000",
-		"stock": "10",
-		"category": "1",
-		"thumbnails": [
-			{
-				"mimetype": "image/jpeg",
-				"path": "/files/products/undefined-7ebbcb05-a433-431c-b5ad-4220ec0c7536.jpeg",
-				"main": true
-			}
-		],
-		"id": 4
 	}
 ]
