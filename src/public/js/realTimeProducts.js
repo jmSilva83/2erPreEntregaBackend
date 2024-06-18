@@ -18,13 +18,12 @@ socket.on('newProduct', (data) => {
   const productElement = document.createElement('div');
   productElement.className = 'card';
   productElement.id = `product-${data.id}`;
-  productElement.style.backgroundImage = `url(${data.thumbnails[0].path})`;
   productElement.style.backgroundSize = 'cover';
   productElement.style.backgroundPosition = 'center';
   productElement.innerHTML = `
         <h2>${data.title}</h2>
         <p>${data.description}</p>
-        <img src="${data.thumbnails[0].path}" alt="${data.title}" style="max-width: 100%;">
+        <img src="${data.thumbnails[0].path}" alt="${data.title}" style="max-width: 100%">
         <p><strong>Price:</strong> $${data.price}</p>
         <p><strong>Stock:</strong> ${data.stock}</p>
         <p><strong>Code:</strong> ${data.code}</p>
@@ -33,25 +32,33 @@ socket.on('newProduct', (data) => {
     `;
   productsList.appendChild(productElement);
 
-// Añadir event listener al botón de eliminar
-const deleteButton = productElement.querySelector('.delete-btn');
-deleteButton.addEventListener('click', () => {
-  console.log(`Deleting product with ID: ${data.id}`); // Verifica que el clic se detecta correctamente
-  fetch(`/api/products/${data.id}`, { method: 'DELETE' })
-    .then(response => {
-      if (response.ok) {
-        console.log(`Product with ID: ${data.id} deleted successfully`);
-      } else {
-        console.error(`Failed to delete product with ID: ${data.id}`);
-      }
-    })
-    .catch(error => console.error('Error:', error));
-});
+  // Añadir event listener al botón de eliminar
+  const deleteButton = productElement.querySelector('.delete-btn');
+  deleteButton.addEventListener('click', () => {
+    console.log(`Deleting product with ID: ${data.id}`); 
+    fetch(`/api/products/${data.id}`, { method: 'DELETE' })
+      .then((response) => {
+        if (response.ok) {
+          console.log(`Producto con ID: ${data.id} eliminado correctamente`);
+          productElement.remove(); // Eliminar tarjeta del DOM
+        } else {
+          console.error(`No se pudo eliminar el producto con ID: ${data.id}`);
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  });
 });
 
-socket.on('deleteProduct', (productId) => {
-const productElement = document.getElementById(`product-${productId}`);
-if (productElement) {
-  productElement.remove();
-}
+socket.on('deleteProduct', async (productId) => {
+  try {
+    const product = await productsService.getProductById(productId);
+    if (!product) {
+      console.error(`Producto con ID ${productId} no encontrado para eliminar`);
+      return;
+    }
+    await productsService.deleteProduct(productId);
+    req.io.emit('deleteProduct', productId); // Emitir evento a todos los clientes conectados
+  } catch (error) {
+    console.error('Error al eliminar el producto:', error);
+  }
 });
