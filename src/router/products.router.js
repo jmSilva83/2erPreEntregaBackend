@@ -243,7 +243,7 @@ router.get('/products/:pid', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching product details:', error.message);
-    res.render('500'); // Render an error page or handle as appropriate
+    res.render('500');
   }
 });
 
@@ -278,5 +278,43 @@ router.post('/', uploader.array('thumbnails', 3), async (req, res) => {
   }
 });
 
+router.delete('/:pid', async (req, res) => {
+  const productId = parseInt(req.params.pid);
+
+  try {
+    // Obtener el producto a eliminar
+    const product = await productsService.getProductById(productId);
+    if (!product) {
+      return res
+        .status(404)
+        .send({ status: 'error', message: 'Product not found' });
+    }
+
+    // Eliminar imágenes asociadas
+    product.thumbnails.forEach((thumbnail) => {
+      const thumbnailPath = path.join(
+        __dirname,
+        '../../public',
+        thumbnail.path
+      );
+      if (fs.existsSync(thumbnailPath)) {
+        fs.unlinkSync(thumbnailPath);
+      }
+    });
+
+    // Eliminar el producto
+    await productsService.deleteProduct(productId);
+
+    // Emitir evento de eliminación de producto
+    req.io.emit('deleteProduct', productId);
+
+    res.send({ status: 'success', message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product:', error.message);
+    res
+      .status(500)
+      .send({ status: 'error', message: 'Error deleting product' });
+  }
+});
 
 export default router;

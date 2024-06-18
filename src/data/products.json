@@ -220,5 +220,115 @@
 			}
 		],
 		"id": 17
+	},
+	{
+		"title": "juego de supergirl",
+		"description": "es una superchica",
+		"code": "afhah",
+		"price": "1000",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718718282446-Super Girl with Black Hair and Blue Eyes.jpeg",
+				"main": true
+			}
+		],
+		"id": 18
+	},
+	{
+		"title": "juego de supergirl2",
+		"description": "es una superchica",
+		"code": "asfgaste",
+		"price": "10004",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718720242033-Super Girl with Black Hair and Blue Eyes.jpeg",
+				"main": true
+			}
+		],
+		"id": 19
+	},
+	{
+		"title": "juego de supergirl3",
+		"description": "es una superchica",
+		"code": "xcvcv",
+		"price": "5000",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718726051287-Super Girl with Black Hair and Blue Eyes.jpeg",
+				"main": true
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718726051288-a1fa1c13-0d0f-4e21-85c9-a3c0ae6a1fab.jpeg",
+				"main": false
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718726051291-7ebbcb05-a433-431c-b5ad-4220ec0c7536.jpeg",
+				"main": false
+			}
+		],
+		"id": 20
+	},
+	{
+		"title": "juego de supergirl3",
+		"description": "es una superchica",
+		"code": "xcvcv",
+		"price": "5000",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718727313153-Premium Vector _ Software development, programming language, coding.jpeg",
+				"main": true
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718727313154-descargar.jpeg",
+				"main": false
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718727313157-AnubisDev work.jpeg",
+				"main": false
+			}
+		],
+		"id": 21
+	},
+	{
+		"title": "juego de supergirl3",
+		"description": "es una superchica",
+		"code": "xcvcv",
+		"price": "5000",
+		"stock": "10",
+		"category": "1",
+		"thumbnails": [
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718729364361-Puede que tu mÃ³vil estÃ© expuesto aunque te digan lo contrario.jpeg",
+				"main": true
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718729364362-Domestic abuse prevention app exposes victims in massive data breach.jpeg",
+				"main": false
+			},
+			{
+				"mimetype": "image/jpeg",
+				"path": "/files/products/1718729364363-Photo by Pankaj Patel on Unsplash.jpeg",
+				"main": false
+			}
+		],
+		"id": 22
 	}
 ]

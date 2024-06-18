@@ -32,4 +32,26 @@ socket.on('newProduct', (data) => {
         <button class="delete-btn" data-id="${data.id}">Delete</button>
     `;
   productsList.appendChild(productElement);
+
+// Añadir event listener al botón de eliminar
+const deleteButton = productElement.querySelector('.delete-btn');
+deleteButton.addEventListener('click', () => {
+  console.log(`Deleting product with ID: ${data.id}`); // Verifica que el clic se detecta correctamente
+  fetch(`/api/products/${data.id}`, { method: 'DELETE' })
+    .then(response => {
+      if (response.ok) {
+        console.log(`Product with ID: ${data.id} deleted successfully`);
+      } else {
+        console.error(`Failed to delete product with ID: ${data.id}`);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+});
+});
+
+socket.on('deleteProduct', (productId) => {
+const productElement = document.getElementById(`product-${productId}`);
+if (productElement) {
+  productElement.remove();
+}
 });
